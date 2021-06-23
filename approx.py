@@ -1,67 +1,5 @@
 import copy
-import matplotlib.pyplot
 import math
-
-
-def input_resolver():
-    answer = input("Ввести данные с консоли или из файла?\nc/f >")
-    data = []
-    if answer == 'c':
-        data = read_input_from_console()
-    elif answer == 'f':
-        data = read_input_from_file()
-    else:
-        input_resolver()
-    approximation = function_dispatcher(data)
-    print("Функция с наименьшим отколнением - " + approximation[3] + " с кэффициентами " + str(approximation[2])
-          + "\nСКО = " + str(math.sqrt(deviate(approximation[0], data) / len(data))))
-    if approximation[3] == "linear: ax + b":
-        print("Коэффициент корреляции = " + str(correlation(data)))
-    show_plot(data, approximation[0])
-
-
-def show_plot(data, function):
-    x = []
-    y = []
-    for i in range(len(data)):
-        x.append(data[i][0])
-        y.append(data[i][1])
-    matplotlib.pyplot.scatter(x, y)
-    func_x = []
-    func_y = []
-    a = data[0][0]
-    b = data[len(data) - 1][0]
-    step = (b - a) / 100
-    a = a - step*10
-    b = b + step*10
-    i = a
-    while i < b:
-        func_x.append(i)
-        func_y.append(function(i))
-        i += step
-    matplotlib.pyplot.plot(func_x, func_y)
-    matplotlib.pyplot.show()
-
-
-# Метод для чтения данных с консоли
-def read_input_from_console():
-    values = []
-    dot_count = int(input('Введите количество точек: '))
-    for i in range(dot_count):
-        x = input('Введите координаты X и Y ' + str(i + 1) + '-ой точки через пробел: ')
-        values.append([float(x.split(" ")[0]), float(x.split(" ")[1])])
-    return values
-
-
-# Метод для чтения данных из файла
-def read_input_from_file():
-    values = []
-    path_to_file = input('Введите путь до файла: ')
-    file = open(path_to_file, 'r')
-    lines = file.readlines()
-    for line in lines:
-        values.append([float(line.split(" ")[0]), float(line.split(" ")[1])])
-    return values
 
 
 def function_dispatcher(data):
@@ -219,7 +157,3 @@ def determinant(matrix):
         return det
     det = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
     return det
-
-
-# Точка входа в программу
-input_resolver()
